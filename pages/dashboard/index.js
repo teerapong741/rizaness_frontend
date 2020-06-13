@@ -284,6 +284,28 @@ const DashBoardPage = () => {
 						</Drawer>
 					</Header>
 
+					<Content
+						className="site-layout-background"
+						style={{
+							margin: '24px 16px 0',
+							padding: '20px'
+						}}
+					>
+						{navState === '1' && <Dashboard />}
+						{navState === '2' && <StockProducts />}
+						{navState === '3' && <StockProducts />}
+						{navState === '4' && <OrderProducts />}
+						{navState === '5' && <Distributors />}
+						{navState === '6' && <PointAndReward />}
+						{navState === '7' && <Statics />}
+						{navState === '8' && <IncomeExpense />}
+						{navState === '9' && <CustomersAndMembers />}
+						{navState === '10' && <StorefrontProgram />}
+						{navState === '11' && <AboutUs />}
+						{navState === '12' && <ReportProblem />}
+						{navState === '13' && <ContactUs />}
+						{navState === '14' && <Setting />}
+					</Content>
 					{visibleChatBox === true && (
 						<>
 							<div className="container-box">
@@ -308,29 +330,6 @@ const DashBoardPage = () => {
 							<ShopOutlined />
 						</div>
 					</div>
-
-					<Content
-						className="site-layout-background"
-						style={{
-							margin: '24px 16px 0',
-							padding: '20px'
-						}}
-					>
-						{navState === '1' && <Dashboard />}
-						{navState === '2' && <StockProducts />}
-						{navState === '3' && <StockProducts />}
-						{navState === '4' && <OrderProducts />}
-						{navState === '5' && <Distributors />}
-						{navState === '6' && <PointAndReward />}
-						{navState === '7' && <Statics />}
-						{navState === '8' && <IncomeExpense />}
-						{navState === '9' && <CustomersAndMembers />}
-						{navState === '10' && <StorefrontProgram />}
-						{navState === '11' && <AboutUs />}
-						{navState === '12' && <ReportProblem />}
-						{navState === '13' && <ContactUs />}
-						{navState === '14' && <Setting />}
-					</Content>
 				</Layout>
 			</Layout>
 		</div>
