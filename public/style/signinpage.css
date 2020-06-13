@@ -1,0 +1,235 @@
+.content-pictur-signin {
+	background-color: #000000;
+	padding: 0%;
+	margin: 0;
+	width: 100%;
+	height: 93vh;
+	position: absolute;
+}
+
+.pictur-signin {
+	width: 60%;
+	height: 93vh;
+	filter: brightness(70%) blur(2px);
+	margin: 0%;
+	padding: 0%;
+}
+
+.content-grid-signin {
+	display: grid;
+	grid-template-columns: 679px 1fr;
+	position: relative;
+	top: 0;
+	bottom: 0;
+}
+
+.content-logo-signin {
+	background-color: none;
+	width: 100%;
+	height: 100%;
+}
+
+.content-logo-signin img {
+	width: 450px;
+	height: 380px;
+	display: block;
+	margin-left: 220px;
+	margin-top: 60px;
+}
+
+.content-form-signin {
+	background-color: white;
+	margin-left: 230px;
+	height: 93vh;
+	width: 626px;
+}
+
+.content-logo-form-signin img:nth-child(1) {
+	width: 40px;
+	height: 50px;
+	position: absolute;
+	margin-left: 215px;
+	margin-top: 50px;
+}
+.content-logo-form-signin img:nth-child(2) {
+	width: 150px;
+	height: 32px;
+	position: absolute;
+	margin-left: 255px;
+	margin-top: 54px;
+}
+.content-logo-form-signin img:nth-child(3) {
+	width: 150px;
+	height: 6px;
+	position: absolute;
+	margin-top: 90px;
+	margin-left: 255px;
+}
+
+.content-form-signin-span-signin span {
+	color: #000;
+	position: absolute;
+	font-size: 25px;
+	font-weight: 400;
+	margin-top: 120px;
+	margin-left: 30px;
+}
+
+.content-form-signin form input {
+	width: 540px;
+	height: 50px;
+	color: black;
+	position: absolute;
+	margin-left: 40px;
+	border-radius: 7px;
+	border-width: 1px;
+	border-color: #bebebe;
+	border-style: solid;
+	text-indent: 10px;
+}
+
+.content-form-signin form input:nth-child(1) {
+	margin-top: 180px;
+}
+
+.content-form-signin form input:nth-child(2) {
+	margin-top: 250px;
+}
+
+.content-form-signin form input::placeholder {
+	color: #bebebe;
+	font-size: 15px;
+	font-weight: 200;
+}
+
+.container-form-signin-checkbox input {
+	display: none;
+}
+
+.container-form-signin-checkbox {
+	display: inline-block;
+	padding-left: 30px;
+	position: absolute;
+	cursor: pointer;
+	user-select: none;
+	margin-left: 40px;
+	margin-top: 320px;
+	font-size: 14px;
+	font-weight: 500;
+}
+
+.container-form-signin-checkbox .checkmark {
+	display: inline-block;
+	width: 25px;
+	height: 25px;
+	background: #eee;
+	position: absolute;
+	left: 0;
+	top: 0;
+	border-radius: 3px;
+	border: 1px solid #bebebe;
+}
+
+.container-form-signin-checkbox input:checked + .checkmark {
+	background: #2196fc;
+}
+
+.container-form-signin-checkbox:hover .checkmark {
+	background-color: #ccc;
+}
+
+.container-form-signin-checkbox input:checked + .checkmark:after {
+	content: '';
+	position: absolute;
+	height: 6px;
+	width: 12px;
+	border-left: 2px solid white;
+	border-bottom: 2px solid white;
+	top: 40%;
+	left: 50%;
+	transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.content-form-signin-forgot-password span {
+	font-size: 14px;
+	font-weight: 500;
+	position: relative;
+	left: 490px;
+	top: 320px;
+	color: #6495ed;
+	cursor: pointer;
+}
+
+.content-form-signin-forgot-password span:hover {
+	color: red;
+}
+
+.content-form-signin-forgot-password span:active {
+	color: #6495ed;
+	transition: 0.4s 0s;
+	transform: translateY(2px);
+	text-shadow: 0 0.5px #666;
+}
+
+.content-form-signin-button-signin button {
+	width: 545px;
+	height: 60px;
+	cursor: pointer;
+	display: inline-block;
+	position: relative;
+	background: linear-gradient(to right, #67b26b, #4ca2cb) !important;
+	border-radius: 4px;
+	border: none;
+	color: #ffffff;
+	text-align: center;
+	text-transform: uppercase;
+	box-shadow: 0 3px #666;
+	outline: none;
+	top: 350px;
+	left: 40px;
+}
+
+.content-form-signin-button-signin button:active {
+	position: relative;
+	box-shadow: 0 0px #666;
+	transform: translateY(3px);
+	transition: 0.4s 0s;
+	list-style: none;
+	text-decoration: none;
+	outline: none;
+}
+
+.content-form-signin-other span {
+	font-size: 17px;
+	font-weight: 400;
+	color: black;
+	position: relative;
+	top: 470px;
+	left: 40px;
+}
+
+.content-form-signin-button-signin-other {
+	padding-top: 500px;
+	padding-left: 40px;
+}
+
+.content-form-signin-button-signin-other button {
+	width: 170px;
+	height: 50px;
+	font-size: 18px;
+	font-weight: 700;
+	border-width: 1px;
+	border-radius: 2px;
+	border-color: gray;
+	outline: none;
+	cursor: pointer;
+}
+
+.content-form-signin-button-signin-other button:nth-child(1) {
+	background-color: #6495ed;
+}
+
+.content-form-signin-button-signin-other button:nth-child(2) {
+	background-color: #ffffff;
+	margin-left: 15px;
+}
