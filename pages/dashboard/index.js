@@ -22,33 +22,35 @@ import {
 	UnorderedListOutlined,
 	BellOutlined,
 	CommentOutlined,
-	CloseSquareFilled
+	CloseSquareFilled,
+	LoadingOutlined
 } from '@ant-design/icons';
 
 import apolloClient from '../../apollo/apolloClient';
 import { AuthContext } from '../../appState/AuthProvider';
-import Dashboard from '../../components/Dashboard';
-import ChatBox from '../../components/ChatBox';
-import NotificationBox from '../../components/NotificationBox';
-import StockProducts from '../../components/StockProducts';
-import OrderProducts from '../../components/OrderProducts';
-import Distributors from '../../components/Distributors';
-import PointAndReward from '../../components/PointAndReward';
-import Statics from '../../components/Statics';
-import IncomeExpense from '../../components/IncomeExpense';
-import CustomersAndMembers from '../../components/CustomersAndMembers';
-import StorefrontProgram from '../../components/StorefrontProgram';
-import AboutUs from '../../components/AboutUs';
-import ReportProblem from '../../components/ReportProblem';
-import ContactUs from '../../components/ContactUs';
-import Setting from '../../components/Setting';
+import Dashboard from '../../components/Dashboard/Home/Dashboard';
+import ChatBox from '../../components/Dashboard/Chat/ChatBox';
+import NotificationBox from '../../components/Dashboard/Notifications/NotificationBox';
+import StockProducts from '../../components/Dashboard/StockProducts/StockProducts';
+import OrderProducts from '../../components/Dashboard/OrderProducts/OrderProducts';
+import Distributors from '../../components/Dashboard/Distributors/Distributors';
+import PointAndReward from '../../components/Dashboard/PointAndReward/PointAndReward';
+import Statics from '../../components/Dashboard/Statics/Statics';
+import IncomeExpense from '../../components/Dashboard/IncomeExpense/IncomeExpense';
+import CustomersAndMembers from '../../components/Dashboard/CustomersAndMembers/CustomersAndMembers';
+import StoreFrontProgram from '../../components/Dashboard/StoreFrontProgram/StorefrontProgram';
+import AboutUs from '../../components/Dashboard/AboutUs/AboutUs';
+import ReportProblem from '../../components/Dashboard/ReportProblem/ReportProblem';
+import ContactUs from '../../components/Dashboard/ContactUs/ContactUs';
+import Setting from '../../components/Dashboard/Setting/Setting';
 
 const { Header, Sider, Content } = Layout;
 
 const DashBoardPage = () => {
 	const [state, setState] = useState({
-		collapsed: false
+		collapsed: true
 	});
+
 	const [visibleUserInfo, setVisibleUserInfo] = useState(false);
 	const [visibleChatBox, setVisibleChatBox] = useState(false);
 	const [chatBox, setChatBox] = useState({
@@ -64,14 +66,14 @@ const DashBoardPage = () => {
 			collapsed: !state.collapsed
 		});
 
-		var navChange = document.querySelector('.site-layout');
+		// var navChange = document.querySelector('.site-layout');
 
-		if (state.collapsed === true) {
-			navChange.style.marginLeft = '200px';
-		}
-		if (state.collapsed === false) {
-			navChange.style.marginLeft = '80px';
-		}
+		// if (state.collapsed === true) {
+		// 	navChange.style.marginLeft = '200px';
+		// }
+		// if (state.collapsed === false) {
+		// 	navChange.style.marginLeft = '80px';
+		// }
 	};
 
 	const showDrawerUserInfo = () => {
@@ -109,6 +111,99 @@ const DashBoardPage = () => {
 					rel="stylesheet"
 				/>
 				<link href="style/dashboard.css" rel="stylesheet" />
+				<Layout className="site-layout">
+					<Header
+						className="site-layout-background"
+						style={{
+							padding: '0',
+							display: 'grid',
+							gridTemplateColumns: 'auto  1fr',
+							height: '64px'
+						}}
+					>
+						<div className="container-shop-name">
+							<p>Maha Shop</p>
+						</div>
+						<div className="container-navbar">
+							<div className="content-nav-grid">
+								<div className="content-nav-profile">
+									<img
+										className="nav-profile"
+										src="images/Cat2.jpg"
+										alt="Cat2.jpg"
+									/>
+								</div>
+
+								<div
+									className="container-icon-user-info"
+									onClick={showDrawerUserInfo}
+								>
+									<UnorderedListOutlined className="icon-user-info" />
+								</div>
+							</div>
+						</div>
+						<Drawer
+							title="ข้อมูลผู้ใช้"
+							placement="right"
+							closable={false}
+							onClose={onCloseDrawerUserInfo}
+							visible={visibleUserInfo}
+							width={720}
+							bodyStyle={{ fontSize: '18px', fontWeight: '500' }}
+						>
+							<p>Some contents...</p>
+							<p>Some contents...</p>
+							<p>Some contents...</p>
+						</Drawer>
+					</Header>
+
+					<Content
+						className="site-layout-background"
+						style={{
+							margin: '24px 16px 0',
+							padding: '20px'
+						}}
+					>
+						{navState === '1' && <Dashboard />}
+						{navState === '2' && <StockProducts />}
+						{navState === '3' && <StockProducts />}
+						{navState === '4' && <OrderProducts />}
+						{navState === '5' && <Distributors />}
+						{navState === '6' && <PointAndReward />}
+						{navState === '7' && <Statics />}
+						{navState === '8' && <IncomeExpense />}
+						{navState === '9' && <CustomersAndMembers />}
+						{navState === '10' && <StoreFrontProgram />}
+						{navState === '11' && <AboutUs />}
+						{navState === '12' && <ReportProblem />}
+						{navState === '13' && <ContactUs />}
+						{navState === '14' && <Setting />}
+					</Content>
+					{visibleChatBox === true && (
+						<>
+							<div className="container-box">
+								<div className="content-box">
+									{chatBox.chat === true && <ChatBox />}
+									{chatBox.notification === true && <NotificationBox />}
+								</div>
+							</div>
+							<div className="button-close-box" onClick={closeChatBox}>
+								<CloseSquareFilled />
+							</div>
+						</>
+					)}
+					<div className="container-button-right">
+						<div className="button-right" onClick={chatBoxState}>
+							<CommentOutlined />
+						</div>
+						<div className="button-right" onClick={notificatoinBoxState}>
+							<BellOutlined />
+						</div>
+						<div className="button-right">
+							<ShopOutlined />
+						</div>
+					</div>
+				</Layout>
 				<Sider
 					trigger={null}
 					collapsible
@@ -120,6 +215,8 @@ const DashBoardPage = () => {
 						position: 'fixed',
 						left: 0
 					}}
+					onMouseEnter={toggle}
+					onMouseLeave={toggle}
 				>
 					<div className="logo">
 						{state.collapsed ? (
@@ -135,35 +232,6 @@ const DashBoardPage = () => {
 							marginTop: '16px'
 						}}
 					/>
-					{state.collapsed ? (
-						<div style={{ width: '0', height: '0' }} />
-					) : (
-						<div className="font-mitr profile-container">
-							<div className="profile-container-grid">
-								<div className="content-profile-photo">
-									<div className="profile">
-										<img
-											className="img-profile"
-											src="images/Cat2.jpg"
-											alt="Avatar"
-										/>
-									</div>
-								</div>
-								<div className="name-grid">
-									<div className="name">จี้หัวควย</div>
-									<div className="rank">Rank: Diamond</div>
-								</div>
-								<div className="setting-grid">
-									<div className="setting">
-										<SettingOutlined />
-									</div>
-									<div className="user">
-										<UserOutlined />
-									</div>
-								</div>
-							</div>
-						</div>
-					)}
 
 					<div
 						style={{
@@ -231,109 +299,9 @@ const DashBoardPage = () => {
 						</Menu.Item>
 					</Menu>
 				</Sider>
-				<Layout className="site-layout">
-					<Header
-						className="site-layout-background"
-						style={{
-							padding: '0',
-							display: 'grid',
-							gridTemplateColumns: 'auto 1fr 1fr',
-							height: '64px'
-						}}
-					>
-						{React.createElement(
-							state.collapsed ? RightCircleFilled : LeftCircleFilled,
-							{
-								className: 'trigger',
-								onClick: toggle
-							}
-						)}
-						<div className="container-shop-name">
-							<p>Maha Shop</p>
-						</div>
-						<div className="container-navbar">
-							<div className="content-nav-grid">
-								<div className="content-nav-profile">
-									<img
-										className="nav-profile"
-										src="images/Cat2.jpg"
-										alt="Cat2.jpg"
-									/>
-								</div>
-
-								<div
-									className="container-icon-user-info"
-									onClick={showDrawerUserInfo}
-								>
-									<UnorderedListOutlined className="icon-user-info" />
-								</div>
-							</div>
-						</div>
-						<Drawer
-							title="ข้อมูลผู้ใช้"
-							placement="right"
-							closable={false}
-							onClose={onCloseDrawerUserInfo}
-							visible={visibleUserInfo}
-							width={720}
-							bodyStyle={{ fontSize: '18px', fontWeight: '500' }}
-						>
-							<p>Some contents...</p>
-							<p>Some contents...</p>
-							<p>Some contents...</p>
-						</Drawer>
-					</Header>
-
-					<Content
-						className="site-layout-background"
-						style={{
-							margin: '24px 16px 0',
-							padding: '20px'
-						}}
-					>
-						{navState === '1' && <Dashboard />}
-						{navState === '2' && <StockProducts />}
-						{navState === '3' && <StockProducts />}
-						{navState === '4' && <OrderProducts />}
-						{navState === '5' && <Distributors />}
-						{navState === '6' && <PointAndReward />}
-						{navState === '7' && <Statics />}
-						{navState === '8' && <IncomeExpense />}
-						{navState === '9' && <CustomersAndMembers />}
-						{navState === '10' && <StorefrontProgram />}
-						{navState === '11' && <AboutUs />}
-						{navState === '12' && <ReportProblem />}
-						{navState === '13' && <ContactUs />}
-						{navState === '14' && <Setting />}
-					</Content>
-					{visibleChatBox === true && (
-						<>
-							<div className="container-box">
-								<div className="content-box">
-									{chatBox.chat === true && <ChatBox />}
-									{chatBox.notification === true && <NotificationBox />}
-								</div>
-							</div>
-							<div className="button-close-box" onClick={closeChatBox}>
-								<CloseSquareFilled />
-							</div>
-						</>
-					)}
-					<div className="container-button-right">
-						<div className="button-right" onClick={chatBoxState}>
-							<CommentOutlined />
-						</div>
-						<div className="button-right" onClick={notificatoinBoxState}>
-							<BellOutlined />
-						</div>
-						<div className="button-right">
-							<ShopOutlined />
-						</div>
-					</div>
-				</Layout>
 			</Layout>
 		</div>
 	);
 };
 
-export default apolloClient(DashBoardPage);
+export default DashBoardPage;

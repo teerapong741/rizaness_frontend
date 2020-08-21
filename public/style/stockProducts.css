@@ -1,0 +1,43 @@
+.container-span {
+	width: 100%;
+	text-align: center;
+	font-size: 30px;
+	font-weight: 800;
+}
+
+.container-button-add-pro {
+	float: left;
+	margin: 0px 0px 20px 0px;
+}
+
+.container-props {
+	display: none;
+}
+
+.ant-table-cell-ellipsis {
+	text-align: center;
+	font-size: 15px;
+	font-weight: 500;
+}
+
+/* .ant-table-thead > tr > th {
+	background-color: #242424;
+	color: white;
+} */
+.ant-table-tbody > tr.ant-table-row:hover > td {
+	background: #e4e4e4;
+}
+
+/* .table-row-light {
+	background-color: #74e0ae;
+}
+.table-row-dark {
+	background-color: #f1f1ee;
+} */
+
+/* .ant-table.ant-table-bordered thead > tr > th,
+.ant-table.ant-table-bordered tbody > tr > td,
+.ant-table.ant-table-bordered tfoot > tr > th,
+.ant-table.ant-table-bordered tfoot > tr > td {
+	border: 0.1px solid #ebeaea;
+} */

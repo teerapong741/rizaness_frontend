@@ -15,7 +15,7 @@ import AuthProvider from '../appState/AuthProvider';
 import apolloClient from '../apollo/apolloClient';
 import { route } from 'next/dist/next-server/server/router';
 
-const QUERY_USER = {
+export const QUERY_USER = {
 	query: `
 		query {
 			user{
@@ -42,22 +42,48 @@ const QUERY_USER = {
 				products {
 				  id
 				  name
-				  type
 				  description
 				  imageUrl {
 					id
+					imageUrl
+					createdAt
 				  }
 				  price
+				  num_of_stock {
+					id
+					stock
+					product {
+					  id
+					}
+					createdAt
+				  }
 				  discountType
 				  discount
 				  num_of_sold
 				  num_put_basket_now
 				  num_put_basket
-				  traffic {
-					product {
-					  name
-					}
+					   user {
+					id
 				  }
+				  status_show {
+					id 
+					status
+					product {
+					  id
+					}
+					createdAt
+				  }
+				  status_product {
+					id 
+					status
+					product {
+					  id
+					}
+					createdAt
+				  }
+				  mem_point
+				  dis_point
+				  SKU
 				  createdAt
 				}
 				authority
@@ -68,6 +94,7 @@ const QUERY_USER = {
 };
 
 function MyApp({ Component, pageProps, apollo, user }) {
+	// console.log('_app-->', user);
 	return (
 		<ApolloProvider client={apollo}>
 			<AuthProvider userData={user}>

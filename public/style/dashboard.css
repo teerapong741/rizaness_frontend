@@ -39,7 +39,7 @@
 }
 
 .site-layout {
-	margin-left: 200px;
+	margin-left: 80px;
 }
 
 .profile-container {
@@ -143,7 +143,7 @@
 	height: 64px;
 	font-size: 25px;
 	font-weight: 500;
-	margin: -4px;
+	margin: -4px 0px -4px 20px;
 }
 
 .container-navbar {
@@ -228,10 +228,9 @@
 	-webkit-box-shadow: 0px 10px 30px -5px rgba(0, 0, 0, 0.57);
 }
 
-::-webkit-scrollbar {
-	width: 0px;
+.ant-layout-sider-dark::-webkit-scrollbar {
+	width: 0;
 }
-
 .ant-drawer-title {
 	font-size: 25px;
 	font-weight: 700;
@@ -281,3 +280,7 @@
 	transform: scale(1);
 }
 /* Chat Box */
+
+.container-props {
+	display: none;
+}

@@ -5,8 +5,8 @@ import Cookies from 'js-cookie';
 import Router from 'next/router';
 import { LoadingOutlined } from '@ant-design/icons';
 
-import PageLayout from '../components/PageLayout';
-import { AuthContext } from '../appState/AuthProvider';
+import PageLayout from '../PageLayout';
+import { AuthContext } from '../../appState/AuthProvider';
 
 const LOG_IN = gql`
 	mutation LOG_IN($username: String!, $password: String!) {
@@ -17,7 +17,6 @@ const LOG_IN = gql`
 				fname
 				lname
 				birthday
-				sex
 				email
 				phone
 				address {
@@ -27,25 +26,28 @@ const LOG_IN = gql`
 					district
 					province
 					postal_code
+					createdAt
 					user {
 						id
+						fname
 					}
-					createdAt
 				}
 				products {
 					id
 					name
-					type
 					description
 					imageUrl {
 						id
-						imageUrl
+					}
+					price
+					num_of_stock {
+						id
+						stock
 						product {
 							id
 						}
 						createdAt
 					}
-					price
 					discountType
 					discount
 					num_of_sold
@@ -54,17 +56,25 @@ const LOG_IN = gql`
 					user {
 						id
 					}
-					createdAt
-				}
-				carts {
-					id
-					product {
+					status_show {
 						id
+						status
+						product {
+							id
+						}
+						createdAt
 					}
-					quantity
-					user {
+					status_product {
 						id
+						status
+						product {
+							id
+						}
+						createdAt
 					}
+					mem_point
+					dis_point
+					SKU
 					createdAt
 				}
 				authority

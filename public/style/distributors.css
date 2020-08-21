@@ -1,0 +1,52 @@
+.bg-toolbar-container {
+    position: absolute;
+    top: 20px;
+}
+
+[link-id] path {
+    stroke: #750000;
+    stroke-width: 5px;
+}
+
+text[node-id] {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 800;
+    fill: #000000;
+}
+
+.node.depth1 rect {
+	fill: #F57C00;
+}
+
+.node.depth2 rect {
+	fill: #F57C;
+}
+
+.node.depth3 rect {
+	fill: #FFFF00;
+}
+
+.node.depth4 rect {
+	fill: #99FF00;
+}
+
+.node.depth5 rect {
+	fill: #00CED1;
+}
+
+.node.depth6 rect {
+	fill: #228B22;
+}
+
+.node.depth7 rect {
+	fill: #CD5C5C;
+}
+
+.node.depth8 rect {
+	fill: #9900FF;
+}
+
+.node.depth9 rect {
+	fill: #FF00FF;
+}

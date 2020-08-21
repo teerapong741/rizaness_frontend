@@ -34,6 +34,25 @@ const QUERY_PRODUCTS = gql`
 					id
 				}
 			}
+			status_show {
+				id
+				status
+				product {
+					id
+				}
+				createdAt
+			}
+			status_product {
+				id
+				status
+				product {
+					id
+				}
+				createdAt
+			}
+			mem_point
+			dis_point
+			SKU
 			createdAt
 		}
 	}

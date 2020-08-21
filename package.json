@@ -11,8 +11,11 @@
     "@ant-design/icons": "^4.2.1",
     "@apollo/react-hooks": "^3.1.5",
     "@babel/core": "^7.10.2",
+    "@balkangraph/orgchart.js": "^7.1.99",
     "@material-ui/core": "^4.10.0",
+    "@staaky/tipped": "^4.7.0",
     "antd": "^4.2.5",
+    "antd-img-crop": "^3.9.0",
     "apollo-cache-inmemory": "^1.6.6",
     "apollo-client": "^2.6.10",
     "apollo-link-context": "^1.0.20",
@@ -24,14 +27,18 @@
     "jquery": "^3.5.1",
     "js-cookie": "^2.2.1",
     "moment": "^2.26.0",
-    "next": "9.4.2",
+    "next": "^9.4.2",
     "next-with-apollo": "^5.0.1",
+    "nextjs": "0.0.3",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-highlight-words": "^0.16.0",
-    "sass": "^1.26.7"
+    "sass": "^1.26.7",
+    "sweetalert": "^2.1.2",
+    "tippy.js": "^6.2.6"
   },
   "devDependencies": {
+    "prettier": "^2.0.5",
     "webpack": "^4.43.0"
   }
 }

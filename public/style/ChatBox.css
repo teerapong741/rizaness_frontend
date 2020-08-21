@@ -26,6 +26,11 @@
 	background-color: #000000;
 	overflow: scroll;
 }
+
+::-webkit-scrollbar {
+	width: 0;
+}
+
 .container-menu-detail-mini-grid {
 	display: grid;
 	grid-template-rows: 1fr 1fr;
