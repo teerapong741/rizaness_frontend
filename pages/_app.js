@@ -39,53 +39,6 @@ export const QUERY_USER = {
 					fname
 				  }
 				}
-				products {
-				  id
-				  name
-				  description
-				  imageUrl {
-					id
-					imageUrl
-					createdAt
-				  }
-				  price
-				  num_of_stock {
-					id
-					stock
-					product {
-					  id
-					}
-					createdAt
-				  }
-				  discountType
-				  discount
-				  num_of_sold
-				  num_put_basket_now
-				  num_put_basket
-					   user {
-					id
-				  }
-				  status_show {
-					id 
-					status
-					product {
-					  id
-					}
-					createdAt
-				  }
-				  status_product {
-					id 
-					status
-					product {
-					  id
-					}
-					createdAt
-				  }
-				  mem_point
-				  dis_point
-				  SKU
-				  createdAt
-				}
 				authority
 				createdAt
 			  }
@@ -110,6 +63,7 @@ MyApp.getInitialProps = async ({ ctx, router }) => {
 	}
 
 	const { headers } = ctx.req;
+	let isToken = false;
 
 	const cookies = headers && cookie.parse(headers.cookie || '');
 
@@ -120,19 +74,15 @@ MyApp.getInitialProps = async ({ ctx, router }) => {
 			ctx.res.writeHead(302, { Location: '/signin' });
 			ctx.res.end();
 		}
+		if (router.pathname === '/home') {
+			ctx.res.writeHead(302, { Location: '/signin' });
+			ctx.res.end();
+		}
 		return null;
 	}
 
 	if (token) {
-		if (
-			router.pathname === '/signin' ||
-			router.pathname === '/signup' ||
-			router.pathname === '/' ||
-			router.pathname === '/products'
-		) {
-			ctx.res.writeHead(302, { Location: '/dashboard' });
-			ctx.res.end();
-		}
+		isToken = true
 	}
 
 	const response = await fetch('http://localhost:4444/graphql', {
@@ -144,12 +94,36 @@ MyApp.getInitialProps = async ({ ctx, router }) => {
 		body: JSON.stringify(QUERY_USER)
 	});
 
+	if (token && isToken==true){
+		if (
+			router.pathname === '/signin' ||
+			router.pathname === '/signup' ||
+			router.pathname === '/' ||
+			router.pathname === '/products'
+		) {
+			if (response.ok) {
+				const result = await response.json()
+				if (result.data.user.authority == 'Seller') {
+					ctx.res.writeHead(302, { Location: '/dashboard' });
+					ctx.res.end();
+				} else {
+					ctx.res.writeHead(302, { Location: '/home' });
+					ctx.res.end();
+				}
+			}
+		}
+	}
+
 	if (response.ok) {
 		const result = await response.json();
 
 		return { user: result.data.user };
 	} else {
 		if (router.pathname === '/dashboard') {
+			ctx.res.writeHead(302, { Location: '/signin' });
+			ctx.res.end();
+		}
+		if (router.pathname === '/home') {
 			ctx.res.writeHead(302, { Location: '/signin' });
 			ctx.res.end();
 		}

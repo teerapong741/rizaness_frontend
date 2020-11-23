@@ -32,51 +32,6 @@ const LOG_IN = gql`
 						fname
 					}
 				}
-				products {
-					id
-					name
-					description
-					imageUrl {
-						id
-					}
-					price
-					num_of_stock {
-						id
-						stock
-						product {
-							id
-						}
-						createdAt
-					}
-					discountType
-					discount
-					num_of_sold
-					num_put_basket_now
-					num_put_basket
-					user {
-						id
-					}
-					status_show {
-						id
-						status
-						product {
-							id
-						}
-						createdAt
-					}
-					status_product {
-						id
-						status
-						product {
-							id
-						}
-						createdAt
-					}
-					mem_point
-					dis_point
-					SKU
-					createdAt
-				}
 				authority
 				createdAt
 			}
@@ -104,7 +59,13 @@ const Signin = () => {
 				username: '',
 				password: ''
 			});
-			Router.push('/dashboard');
+			// console.log('data->', data.login.user)
+			// Router.push('/dashboard');
+			if (data.login.user.authority == 'Seller') {
+				Router.push('/dashboard');
+			} else {
+				Router.push('/home');
+			}
 		}
 	});
 

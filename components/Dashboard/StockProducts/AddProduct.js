@@ -51,7 +51,9 @@ const options = [
 						value: 'ผงชามัจฉะ',
 						label: 'ผงชามัจฉะ'
 					}
-				],
+				]
+			},
+			{
 				value: 'ผงชาไทย',
 				label: 'ผงชาไทย',
 				children: [
@@ -87,70 +89,99 @@ const options = [
 
 const ADD_PRODUCT = gql`
 	mutation ADD_PRODUCT(
+		$idOwner: ID!
+		$idShop: ID!
+		$idPickUpFrom: ID!
 		$name: String!
-		$description: String!
+		$description: String
 		$price: Float!
 		$min_of_stock: Float!
-		$discount: Float
 		$discountType: String
+		$discount: Float
 		$discountTimeStart: DateTime
 		$discountTimeEnd: DateTime
 		$mem_point: Int
 		$dis_point: Int
-		$ParentSKU: String!
 		$SKU: String
+		$ParentSKU: String!
 	) {
 		addProduct(
+			idOwner: $idOwner
+			idShop: $idShop
+			idPickUpFrom: $idPickUpFrom
 			name: $name
 			description: $description
 			price: $price
 			min_of_stock: $min_of_stock
-			discount: $discount
 			discountType: $discountType
+			discount: $discount
 			discountTimeStart: $discountTimeStart
 			discountTimeEnd: $discountTimeEnd
 			mem_point: $mem_point
 			dis_point: $dis_point
-			ParentSKU: $ParentSKU
 			SKU: $SKU
+			ParentSKU: $ParentSKU
 		) {
 			id
 			name
-			description
-			imageUrl {
-				id
-				imageUrl
-				createdAt
-			}
 			type {
 				id
 				type
 				product {
-					id
+					name
+				}
+				createdAt
+			}
+			description
+			imageUrl {
+				id
+				imageUrl
+				product {
+					name
 				}
 				createdAt
 			}
 			price
+			min_of_stock
+			num_of_stock {
+				id
+				stock
+				price
+				cost
+				statusExpiration
+				Expiration
+				stockEdit {
+					id
+					stockEdit
+					priceEdit
+					costEdit
+					statusExpirationEdit
+					ExpirationEdit
+					stock {
+						stock
+					}
+					createdAt
+				}
+				product {
+					name
+				}
+				createdAt
+			}
 			discountType
 			discount
+			discountTimeStart
+			discountTimeEnd
 			num_of_sold
 			num_put_basket_now
 			num_put_basket
 			user {
-				id
 				username
-				address {
-					id
-				}
-				products {
-					id
-				}
 			}
 			status_show {
 				id
 				status
 				product {
-					id
+					name
 				}
 				createdAt
 			}
@@ -158,17 +189,33 @@ const ADD_PRODUCT = gql`
 				id
 				status
 				product {
-					id
+					name
 				}
 				createdAt
 			}
-			min_of_stock
-			discountTimeStart
-			discountTimeEnd
 			mem_point
 			dis_point
-			ParentSKU
+			productWholeSale {
+				id
+				price
+				min_sale
+				max_sale
+				product {
+					name
+				}
+				createdAt
+			}
 			SKU
+			ParentSKU
+			owner {
+				username
+			}
+			pickUpFrom {
+				username
+			}
+			shops {
+				shopName
+			}
 			createdAt
 		}
 	}
@@ -287,8 +334,10 @@ function getBase64(file) {
 let loadingAddProduct = false;
 let success = false;
 
-const AddProduct = () => {
-
+const AddProduct = ({prod}) => {
+	// console.log('data',prod.user)
+	// console.log('data ID',prod.user.id)
+	// console.log('data ID',prod.user.id.toString())
 	//! Add Product Whole Sale -----------------------------------------------------------------------------------------------
 
 	const [
@@ -670,9 +719,13 @@ const AddProduct = () => {
 				) {
 					await handleChangeLoading()
 					if (loadingAddProduct === true) {
+						console.log('option_1.status-->',option_1.status)
 						if (option_1.status === false) {
 							const uploadProduct = await addProduct({
 								variables: {
+									idOwner: prod.user.id,
+									idShop: prod.user.shops[0].id,
+									idPickUpFrom: prod.user.id,
 									name: productInfo.name,
 									description: productInfo.description,
 									price: +productInfo.price,
@@ -710,6 +763,9 @@ const AddProduct = () => {
 							await addProduct(
 							{
 								variables: {
+									idOwner: prod.user.id,
+									idShop: prod.user.shops[0].id,
+									idPickUpFrom: prod.user.id,
 									name: productInfo.name,
 									description: productInfo.description,
 									price: +productInfo.price,
@@ -911,7 +967,7 @@ const AddProduct = () => {
 	};
 
 	const handleChangeUploadImgProOption = (
-		{ fileList: newFileList, file: newFile },
+		{ fileList: newFileList},
 		j
 	) => {
 		if (fileListOption.fileList === undefined) {

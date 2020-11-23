@@ -39,100 +39,111 @@ export const ME = gql`
 	query ME {
 		user {
 			id
-			username
-			fname
-			lname
-			birthday
-			email
-			phone
-			address {
+			shops {
 				id
-				address
-				sub_area
-				district
-				province
-				postal_code
-				createdAt
-				user {
+				products {
 					id
-					fname
-				}
-			}
-			products {
-				id
-				name
-				type {
-					id
-					type
-					product {
+					name
+					type {
 						id
+						type
+						# product {
+						# 	name
+						# }
+						createdAt
 					}
-					createdAt
-				}
-				description
-				imageUrl {
-					id
-					imageUrl
-					createdAt
-				}
-				price
-				num_of_stock {
-					id
-					stock
-					stockEdit {
+					description
+					imageUrl {
 						id
-						stockEdit
-						stock {
+						imageUrl
+						# product {
+						# 	name
+						# }
+						createdAt
+					}
+					price
+					min_of_stock
+					num_of_stock {
+						id
+						stock
+						price
+						cost
+						statusExpiration
+						Expiration
+						stockEdit {
 							id
+							stockEdit
+							priceEdit
+							costEdit
+							statusExpirationEdit
+							ExpirationEdit
+							stock {
+								stock
+							}
+							createdAt
+						}
+						# product {
+						# 	name
+						# }
+						createdAt
+					}
+					discountType
+					discount
+					discountTimeStart
+					discountTimeEnd
+					num_of_sold
+					num_put_basket_now
+					num_put_basket
+					user {
+						username
+					}
+					status_show {
+						id
+						status
+						# product {
+						# 	name
+						# }
+						createdAt
+					}
+					status_product {
+						id
+						status
+						# product {
+						# 	name
+						# }
+						createdAt
+					}
+					mem_point
+					dis_point
+					productWholeSale {
+						id
+						price
+						min_sale
+						max_sale
+						product {
+							name
 						}
 						createdAt
 					}
-					product {
-						id
-					}
+					SKU
+					ParentSKU
 					createdAt
 				}
-				discountType
-				discount
-				discountTimeStart
-				discountTimeEnd
-				num_of_sold
-				num_put_basket_now
-				num_put_basket
-				traffic {
-					id
-				}
-				user {
-					id
-				}
-				status_show {
-					id
-					status
-					product {
-						id
-					}
-					createdAt
-				}
-				status_product {
-					id
-					status
-					product {
-						id
-					}
-					createdAt
-				}
-				mem_point
-				dis_point
-				SKU
-				ParentSKU
-				createdAt
 			}
-			authority
-			createdAt
 		}
 	}
 `;
+
+const DELETE_PRODUCT = gql`
+	mutation DELETE_PRODUCT($idPro: ID!, $idShop: ID!) {
+		deleteProduct(idPro: $idPro, idShop: $idShop) {
+			id
+			name
+		}
+	}
+`
 export let keySelectedProductEx = 0;
+// let loadingQueryProduct = true;
 
 const StockProducts = () => {
 	let dataProduct = [];
@@ -155,62 +166,67 @@ const StockProducts = () => {
 	let searchInput;
 
 	const { data, loading, error, refetch } = useQuery(ME, {
-		onCompleted: (data) => {}
+		onCompleted: (data) => {
+		}
 	});
 	refetch();
 
 	if (data) {
-		for (let i = 0; i < data.user.products.length; i++) {
-			let typePro = [];
-			let stockLength = 0;
-			let stock = 0;
-			let sold = 0;
-			let statusShow = []
-			let statusPro = []
+		if (data.user.shops && data.user.shops[0] && data.user.shops[0].products) {
+			for (let i = 0; i < data.user.shops[0].products.length; i++) {
+				let typePro = [];
+				let stockLength = 0;
+				let stock = 0;
+				let sold = 0;
+				let statusShow = []
+				let statusPro = []
 
-			for (let j = 0; j < data.user.products[i].type.length; j++) {
-				typePro[j] = data.user.products[i].type[j].type;
+				for (let j = 0; j < data.user.shops[0].products[i].type.length; j++) {
+					typePro[j] = data.user.shops[0].products[i].type[j].type;
+				}
+				stockLength = data.user.shops[0].products[i].num_of_stock.length - 1;
+
+				// console.log('1-->', dataStock);
+				sold = data.user.shops[0].products[i].num_of_sold;
+				for (let j = 0; j < data.user.shops[0].products[i].num_of_stock.length; j++) {
+					stock = stock + data.user.shops[0].products[i].num_of_stock[j].stock;
+				}
+
+				for (let j=0; j<data.user.shops[0].products[i].status_product.length; j++){
+					statusPro.push(data.user.shops[0].products[i].status_product[j].status)
+				}
+
+				for (let j=0; j<data.user.shops[0].products[i].status_show.length; j++){
+					statusShow.push(data.user.shops[0].products[i].status_show[j].status)
+				}
+
+				dataProduct.push({
+					key: i,
+					name: data.user.shops[0].products[i].name,
+					type: typePro,
+					description: data.user.shops[0].products[i].description,
+					imageUrl: data.user.shops[0].products[i].imageUrl[0].imageUrl,
+					price: data.user.shops[0].products[i].price,
+					num_of_stock: stock - sold,
+					discountType: data.user.shops[0].products[i].discountType,
+					discount: data.user.shops[0].products[i].discount,
+					discountTimeStart: data.user.shops[0].products[i].discountTimeStart,
+					discountTimeEnd: data.user.shops[0].products[i].discountTimeEnd,
+					num_of_sold: data.user.shops[0].products[i].num_of_sold,
+					num_put_basket_now: data.user.shops[0].products[i].num_put_basket_now,
+					num_put_basket: data.user.shops[0].products[i].num_put_basket,
+					traffic: data.user.shops[0].products[i].traffic,
+					status_show: statusShow,
+					status_product: statusPro,
+					mem_point: data.user.shops[0].products[i].mem_point,
+					dis_point: data.user.shops[0].products[i].dis_point,
+					SKU: data.user.shops[0].products[i].SKU,
+					ParentSKU: data.user.shops[0].products[i].ParentSKU,
+					createdAt: data.user.shops[0].products[i].createdAt
+				});
 			}
-			stockLength = data.user.products[i].num_of_stock.length - 1;
-
-			// console.log('1-->', dataStock);
-			sold = data.user.products[i].num_of_sold;
-			for (let j = 0; j < data.user.products[i].num_of_stock.length; j++) {
-				stock = stock + data.user.products[i].num_of_stock[j].stock;
-			}
-
-			for (let j=0; j<data.user.products[i].status_product.length; j++){
-				statusPro.push(data.user.products[i].status_product[j].status)
-			}
-
-			for (let j=0; j<data.user.products[i].status_show.length; j++){
-				statusShow.push(data.user.products[i].status_show[j].status)
-			}
-
-			dataProduct.push({
-				key: i,
-				name: data.user.products[i].name,
-				type: typePro,
-				description: data.user.products[i].description,
-				imageUrl: data.user.products[i].imageUrl[0].imageUrl,
-				price: data.user.products[i].price,
-				num_of_stock: stock - sold,
-				discountType: data.user.products[i].discountType,
-				discount: data.user.products[i].discount,
-				discountTimeStart: data.user.products[i].discountTimeStart,
-				discountTimeEnd: data.user.products[i].discountTimeEnd,
-				num_of_sold: data.user.products[i].num_of_sold,
-				num_put_basket_now: data.user.products[i].num_put_basket_now,
-				num_put_basket: data.user.products[i].num_put_basket,
-				traffic: data.user.products[i].traffic,
-				status_show: statusShow,
-				status_product: statusPro,
-				mem_point: data.user.products[i].mem_point,
-				dis_point: data.user.products[i].dis_point,
-				SKU: data.user.products[i].SKU,
-				ParentSKU: data.user.products[i].ParentSKU,
-				createdAt: data.user.products[i].createdAt
-			});
+		} else {
+			dataProduct = []
 		}
 	}
 
@@ -679,15 +695,15 @@ const StockProducts = () => {
 		const datalengthStock = [];
 		let lengthStock = 0;
 		let rowKey = row.key;
-		for (let i = 0; i < data.user.products.length; i++) {
-			for (let j = 0; j < data.user.products[i].num_of_stock.length; j++) {
+		for (let i = 0; i < data.user.shops[0].products.length; i++) {
+			for (let j = 0; j < data.user.shops[0].products[i].num_of_stock.length; j++) {
 				{
 					dataStock.push({
 						key: j,
-						date: data.user.products[i].num_of_stock[j].createdAt,
-						stock: data.user.products[i].num_of_stock[j].stock,
+						date: data.user.shops[0].products[i].num_of_stock[j].createdAt,
+						stock: data.user.shops[0].products[i].num_of_stock[j].stock,
 						status:
-							data.user.products[i].num_of_stock[j].stockEdit.length > 0
+							data.user.shops[0].products[i].num_of_stock[j].stockEdit.length > 0
 								? ['มีการแก้ไข']
 								: ['เสร็จสิ้น']
 					});
@@ -695,7 +711,7 @@ const StockProducts = () => {
 				dataStockMap.push(dataStock[lengthStock]);
 				lengthStock += 1;
 			}
-			datalengthStock.push(data.user.products[i].num_of_stock.length);
+			datalengthStock.push(data.user.shops[0].products[i].num_of_stock.length);
 		}
 		// console.log('datalengthStock-->', datalengthStock);
 		// console.log('dataStockMap-->', dataStockMap);
@@ -749,13 +765,13 @@ const StockProducts = () => {
 		];
 		let inTable = [];
 		let count = 0;
-		for (let i = 0; i < data.user.products.length; i++) {
+		for (let i = 0; i < data.user.shops[0].products.length; i++) {
 			count = 0;
 			for (let k = 0; k <= i; k++) {
 				count = count + datalengthStock[k];
 			}
 
-			for (let j = 0; j < data.user.products[i].num_of_stock.length; j++) {
+			for (let j = 0; j < data.user.shops[0].products[i].num_of_stock.length; j++) {
 				if (row.key === i) {
 					inTable.push(dataStockMap[count - 1]);
 					count = count - 1;
@@ -773,28 +789,28 @@ const StockProducts = () => {
 			const dataStockMapSub = [];
 			const datalengthStockSub = [];
 			let lengthStockSub = 0;
-			for (let i = 0; i < data.user.products.length; i++) {
-				for (let j = 0; j < data.user.products[i].num_of_stock.length; j++) {
+			for (let i = 0; i < data.user.shops[0].products.length; i++) {
+				for (let j = 0; j < data.user.shops[0].products[i].num_of_stock.length; j++) {
 					for (
 						let k = 0;
-						k < data.user.products[i].num_of_stock[j].stockEdit.length;
+						k < data.user.shops[0].products[i].num_of_stock[j].stockEdit.length;
 						k++
 					) {
 						{
 							dataStockSub.push({
 								key: k,
 								date:
-									data.user.products[i].num_of_stock[j].stockEdit.length > 0
-										? data.user.products[i].num_of_stock[j].stockEdit[k]
+									data.user.shops[0].products[i].num_of_stock[j].stockEdit.length > 0
+										? data.user.shops[0].products[i].num_of_stock[j].stockEdit[k]
 												.createdAt
 										: [''],
 								stock:
-									data.user.products[i].num_of_stock[j].stockEdit.length > 0
-										? data.user.products[i].num_of_stock[j].stockEdit[k]
+									data.user.shops[0].products[i].num_of_stock[j].stockEdit.length > 0
+										? data.user.shops[0].products[i].num_of_stock[j].stockEdit[k]
 												.stockEdit
 										: [''],
 								status:
-									data.user.products[i].num_of_stock[j].stockEdit.length > 0
+									data.user.shops[0].products[i].num_of_stock[j].stockEdit.length > 0
 										? ['มีการแก้ไข']
 										: ['เสร็จสิ้น']
 							});
@@ -803,7 +819,7 @@ const StockProducts = () => {
 						lengthStockSub += 1;
 					}
 					datalengthStockSub.push(
-						data.user.products[i].num_of_stock[j].stockEdit.length
+						data.user.shops[0].products[i].num_of_stock[j].stockEdit.length
 					);
 				}
 			}
@@ -847,12 +863,12 @@ const StockProducts = () => {
 			let inTableSub = [];
 			let countSub = 0;
 			let countSubStockEdit = 0;
-			for (let i = 0; i < data.user.products.length; i++) {
+			for (let i = 0; i < data.user.shops[0].products.length; i++) {
 				console.log('ix', i);
-				for (let j = 0; j < data.user.products[i].num_of_stock.length; j++) {
+				for (let j = 0; j < data.user.shops[0].products[i].num_of_stock.length; j++) {
 					countSub = 0;
 					for (let k = 0; k <= j + countSubStockEdit; k++) {
-						if (data.user.products[i].num_of_stock[j].stockEdit.length === 0) {
+						if (data.user.shops[0].products[i].num_of_stock[j].stockEdit.length === 0) {
 							countSub = 1;
 						} else {
 							countSub = countSub + datalengthStockSub[k];
@@ -863,11 +879,11 @@ const StockProducts = () => {
 						dataStockMap[j + countSubStockEdit].status[0].toString() ===
 							'มีการแก้ไข' &&
 						row.key === j &&
-						data.user.products[i].num_of_stock[j].stockEdit.length > 0
+						data.user.shops[0].products[i].num_of_stock[j].stockEdit.length > 0
 					) {
 						for (
 							let k = 0;
-							k < data.user.products[i].num_of_stock[j].stockEdit.length;
+							k < data.user.shops[0].products[i].num_of_stock[j].stockEdit.length;
 							k++
 						) {
 							if (row.key === j) {
@@ -881,12 +897,12 @@ const StockProducts = () => {
 						dataStockMap[j + countSubStockEdit].status[0].toString() ===
 							'เสร็จสิ้น' &&
 						row.key === j &&
-						data.user.products[i].num_of_stock[j].stockEdit.length <= 0
+						data.user.shops[0].products[i].num_of_stock[j].stockEdit.length <= 0
 					) {
 						inTableSub.length = 0;
 					}
 				}
-				for (let j = 0; j < data.user.products[i].num_of_stock.length; j++) {
+				for (let j = 0; j < data.user.shops[0].products[i].num_of_stock.length; j++) {
 					countSubStockEdit += 1;
 				}
 			}
@@ -904,6 +920,7 @@ const StockProducts = () => {
 			/>
 		);
 	};
+
 	return (
 		<div>
 			<link
@@ -927,7 +944,7 @@ const StockProducts = () => {
 					backgroundColor: '#F5F5F5'
 				}}
 			>
-				<AddProduct />
+				<AddProduct prod={data} />
 			</Drawer>
 
 			<Drawer
@@ -1020,7 +1037,7 @@ const StockProducts = () => {
 					</div>
 
 					<Table
-						rowKey={data.user.products.id}
+						rowKey={data.user.shops[0].products === undefined ? null : data.user.shops[0].products.id}
 						rowSelection={rowSelection}
 						columns={columns}
 						dataSource={dataProduct}
@@ -1037,9 +1054,139 @@ const StockProducts = () => {
 							showQuickJumper: true,
 							showTotal: (total) => `Total ${total} item`
 						}}
-						scroll={{ x: 100 }}
+						scroll={{ x: true }}
 					/>
 				</TabPane>
+				<TabPane tab="กำลังจำหน่าย" key="2">
+					<div style={{ marginBottom: 16 }}>
+						<Button onClick={clearFilters} style={{ marginRight: 8 }}>
+							ลบตัวกรอง
+						</Button>
+						<Button onClick={clearAll} style={{ marginRight: 8 }}>
+							ลบตัวกรองและการจัดเรียง
+						</Button>
+						<Button
+							type="primary"
+							danger
+							onClick={start}
+							disabled={!hasSelected}
+							loading={loadingBottomDelete}
+						>
+							ลบสินค้าที่เลือก
+						</Button>
+						<span style={{ marginLeft: 8 }}>
+							{hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
+						</span>
+					</div>
+
+					<Table
+						rowKey={data.user.shops[0].products === undefined ? null : data.user.shops[0].products.id}
+						rowSelection={rowSelection}
+						columns={columns}
+						dataSource={dataProduct}
+						onChange={handleChange}
+						expandable={{ expandedRowRender }}
+						bordered
+						rowClassName={(record, index) =>
+							index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
+						}
+						pagination={{
+							position: ['bottomLeft'],
+							total: dataProduct.length,
+							showSizeChanger: true,
+							showQuickJumper: true,
+							showTotal: (total) => `Total ${total} item`
+						}}
+						scroll={{ x: true }}
+					/>
+				</TabPane>
+				<TabPane tab="สินค้าหมดสต็อก" key="3">
+					<div style={{ marginBottom: 16 }}>
+						<Button onClick={clearFilters} style={{ marginRight: 8 }}>
+							ลบตัวกรอง
+						</Button>
+						<Button onClick={clearAll} style={{ marginRight: 8 }}>
+							ลบตัวกรองและการจัดเรียง
+						</Button>
+						<Button
+							type="primary"
+							danger
+							onClick={start}
+							disabled={!hasSelected}
+							loading={loadingBottomDelete}
+						>
+							ลบสินค้าที่เลือก
+						</Button>
+						<span style={{ marginLeft: 8 }}>
+							{hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
+						</span>
+					</div>
+
+					<Table
+						rowKey={data.user.shops[0].products === undefined ? null : data.user.shops[0].products.id}
+						rowSelection={rowSelection}
+						columns={columns}
+						dataSource={dataProduct}
+						onChange={handleChange}
+						expandable={{ expandedRowRender }}
+						bordered
+						rowClassName={(record, index) =>
+							index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
+						}
+						pagination={{
+							position: ['bottomLeft'],
+							total: dataProduct.length,
+							showSizeChanger: true,
+							showQuickJumper: true,
+							showTotal: (total) => `Total ${total} item`
+						}}
+						scroll={{ x: true }}
+					/>
+				</TabPane>
+				<TabPane tab="เลิกจำหน่าย" key="4">
+					<div style={{ marginBottom: 16 }}>
+						<Button onClick={clearFilters} style={{ marginRight: 8 }}>
+							ลบตัวกรอง
+						</Button>
+						<Button onClick={clearAll} style={{ marginRight: 8 }}>
+							ลบตัวกรองและการจัดเรียง
+						</Button>
+						<Button
+							type="primary"
+							danger
+							onClick={start}
+							disabled={!hasSelected}
+							loading={loadingBottomDelete}
+						>
+							ลบสินค้าที่เลือก
+						</Button>
+						<span style={{ marginLeft: 8 }}>
+							{hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
+						</span>
+					</div>
+
+					<Table
+						rowKey={data.user.shops[0].products === undefined ? null : data.user.shops[0].products.id}
+						rowSelection={rowSelection}
+						columns={columns}
+						dataSource={dataProduct}
+						onChange={handleChange}
+						expandable={{ expandedRowRender }}
+						bordered
+						rowClassName={(record, index) =>
+							index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
+						}
+						pagination={{
+							position: ['bottomLeft'],
+							total: dataProduct.length,
+							showSizeChanger: true,
+							showQuickJumper: true,
+							showTotal: (total) => `Total ${total} item`
+						}}
+						scroll={{ x: true }}
+					/>
+				</TabPane>
+				
 				{/* <TabPane tab="กำลังจำหน่าย" key="2">
 							<div style={{ marginBottom: 16 }}>
 								<Button onClick={this.clearFilters} style={{ marginRight: 8 }}>

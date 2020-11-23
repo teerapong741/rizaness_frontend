@@ -83,45 +83,45 @@ const AddStockProduct = () => {
 		if (typeof keySelectedProductEx === 'number') {
 			let stock = 0;
 			let sold = 0;
-			sold = data.user.products[keySelectedProductEx].num_of_sold;
+			sold = data.user.shops[0].products[keySelectedProductEx].num_of_sold;
 			for (
 				let j = 0;
-				j < data.user.products[keySelectedProductEx].num_of_stock.length;
+				j < data.user.shops[0].products[keySelectedProductEx].num_of_stock.length;
 				j++
 			) {
 				stock =
 					stock +
-					data.user.products[keySelectedProductEx].num_of_stock[j].stock;
+					data.user.shops[0].products[keySelectedProductEx].num_of_stock[j].stock;
 			}
 
 			// let typePro = [];
 			// for (
 			// 	let j = 0;
-			// 	j < data.user.products[keySelectedProductEx].type.length;
+			// 	j < data.user.shops[0].products[keySelectedProductEx].type.length;
 			// 	j++
 			// ) {
-			// 	typePro[j] = data.user.products[keySelectedProductEx].type[j].type;
+			// 	typePro[j] = data.user.shops[0].products[keySelectedProductEx].type[j].type;
 			// }
 
 			// const lengthStock =
-			// 	data.user.products[keySelectedProductEx].num_of_stock.length - 1;
+			// 	data.user.shops[0].products[keySelectedProductEx].num_of_stock.length - 1;
 			// setProductInfo({
 			// 	...productInfo,
 			// 	stockEdit:
-			// 		data.user.products[keySelectedProductEx].num_of_stock[lengthStock]
+			// 		data.user.shops[0].products[keySelectedProductEx].num_of_stock[lengthStock]
 			// 			.stock,
 			// 	createdAt:
-			// 		data.user.products[keySelectedProductEx].num_of_stock[lengthStock]
+			// 		data.user.shops[0].products[keySelectedProductEx].num_of_stock[lengthStock]
 			// 			.createdAt
 			// });
 
-			imageUrl = data.user.products[keySelectedProductEx].imageUrl[0].imageUrl;
-			productName = data.user.products[keySelectedProductEx].name;
-			productType = data.user.products[keySelectedProductEx].type;
-			productPrice = data.user.products[keySelectedProductEx].price;
+			imageUrl = data.user.shops[0].products[keySelectedProductEx].imageUrl[0].imageUrl;
+			productName = data.user.shops[0].products[keySelectedProductEx].name;
+			productType = data.user.shops[0].products[keySelectedProductEx].type;
+			productPrice = data.user.shops[0].products[keySelectedProductEx].price;
 			productStock = stock - sold;
 			productSale = sold;
-			productId = data.user.products[keySelectedProductEx].id.toString();
+			productId = data.user.shops[0].products[keySelectedProductEx].id.toString();
 		}
 	}
 
